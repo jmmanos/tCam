@@ -25,7 +25,7 @@ if __name__ == "__main__":
     args = parser.parse_args()
 
     if not args.ip:
-        ip = "192.168.4.1"
+        ip = "192.168.1.142"
     else:
         ip = args.ip
 

@@ -14,6 +14,7 @@ from tkinter import *
 from array import array
 from PIL import Image, ImageTk
 from threading import Event
+from palettes import ironblack_palette
 
 def convert(img):
 
@@ -27,15 +28,25 @@ def convert(img):
             imgmin = i
         if i > imgmax:
             imgmax = i
+
+    ## setting min and max
+    imgmin = 28915
+    imgmax = 31615
+    ###
     delta = imgmax - imgmin
+    # print(f"Max val is {imgmax}, Min val is {imgmin}, Delta is {delta}")
     a = np.zeros((120,160,3), np.uint8)
+
     for r in range(0, 120):
         for c in range(0, 160):
-            val = int((ra[(r * 160) + c] - imgmin) * 255 / delta)
+            currVal = ra[(r * 160) + c]
+            #t = (currVal / 100) - 273.15
+            #print(f"({c}, {r}): {t}")
+            val = int((currVal - imgmin) * 255 / delta)
             if val > 255:
-                a[r, c] = [255, 255, 255]
+                a[r, c] = ironblack_palette[255]
             else:
-                a[r, c] = [val, val, val]
+                a[r, c] = ironblack_palette[val]
     return a
 
 def update():
@@ -63,7 +74,7 @@ if __name__ == '__main__':
     args = parser.parse_args()
 
     if not args.ip:
-        args.ip = "192.168.4.1"
+        args.ip = "192.168.1.146"
         print(f"Using default of {args.ip}")
 
     tcam = TCam()

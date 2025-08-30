@@ -217,6 +217,7 @@ class TCamManagerThread(TCamManagerThreadBase):
         rbuf = b''
         try:
             rbuf = self.tcamSocket.recv(65536)
+            # print(f"Read: {len(rbuf)}")
         except socket.timeout as e:
             pass
         return rbuf
@@ -226,6 +227,7 @@ class TCamManagerThread(TCamManagerThreadBase):
             self.responseQueue.put({"status": "disconnected", "msg":"Please call connect() first, refusing to write to empty interface."})
             self.frameQueue.put({"status": "disconnected", "msg":"Please call connect() first, refusing to write to empty interface."})
         else:
+            # print(f"Write bytes: {buf.hex()}")
             self.tcamSocket.send(buf)
 
     def post_process(self, msg):
